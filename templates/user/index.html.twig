@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Crud Users{% endblock %}
+
+{% block body %}
+
+    {% if useres %}
+    <table id="user" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Correo</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+    </tablet>
+    <tbody>
+        {% for user in useres %}
+          <tr>
+            <td>{{ user.email }}</td>
+            <td>
+              <a href="/user/{{ user.id }}" class="btn btn-dark">Show</a>
+              <a href="/user/edit/{{ user.id }}" class="btn btn-light">Edit</a>
+              <a href="#" class="btn btn-danger delete-article" data-id="{{ user.id }}">Delete</a> 
+
+            </td>
+          </tr>
+        {% endfor %}
+    </tbody>
+    {% else %}
+        <p>No Articles to display</p>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+
+  <script src="js/main.js"></script>
+
+{% endblock %}
