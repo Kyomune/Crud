@@ -26,7 +26,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string")
      */
-    private $roles;
+    public $roles;
 
     /**
      * @var string The hashed password
@@ -71,7 +71,7 @@ class User implements UserInterface
         // $roles[] = 'ROLE_USER';
 
         // return array_unique($roles);
-        return $roles;
+        return ($roles);
     }
 
     public function setRoles($roles)

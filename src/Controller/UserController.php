@@ -26,7 +26,8 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/", name="home")
+     * @Route("/api/users", name="home")
+     * Method({"GET"})
      */
     public function index() 
     {
@@ -37,7 +38,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/user/new", name="user_new")
+     * @Route("/api/user/new", name="user_new")
      * Method({"GET", "POST"})
      */
 
@@ -64,7 +65,7 @@ class UserController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
-            $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getEmail()));
+            $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getPassword()));
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
@@ -79,16 +80,17 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/user/{id}", name="user_show")
+     * @Route("/api/user/{id}", name="user_show")
      */
     public function show($id) {
         $user = $this->getDoctrine()->getRepository(User::class)->find($id);
+        var_dump($user);
 
         return $this->render('user/show.html.twig', array('user' => $user));
     }
 
     /**
-            * @Route("/user/edit/{id}", name="edit_user")
+            * @Route("api/user/edit/{id}", name="edit_user")
             * Method({"GET", "POST"})
          */
 
@@ -96,13 +98,14 @@ class UserController extends AbstractController
             $user = new User();
             $user = $this->getDoctrine()->getRepository(User::class)->find($id);
 
+
             $form = $this->createFormBuilder($user)
             ->add('email', TextType::class, array('attr' => array('class' => 'form-control')))
             ->add('password', TextareaType::class, array(
             'required' => false,
             'attr' => array('class' => 'form-control')
             ))
-            ->add('roles', TextType::class, array('attr' => array('class' => 'form-control')))
+            ->add('roles', TextType::class, null, array('attr' => array('class' => 'form-control')))
             ->add('save', SubmitType::class, array(
             'label' => 'Update',
             'attr' => array('class' => 'btn btn-primary mt-3')
@@ -119,14 +122,14 @@ class UserController extends AbstractController
                 return $this->redirectToRoute('home');
             }
 
-            return $this->render('user/edit.html.twig', array( 'form' => $form->createView()));
+            return $this->render('user/edit.html.twig', array('form' => $form->createView()));
 
 
         }
 
 
     /**
-     * @Route("/user/delete/{id}")
+     * @Route("/api/user/delete/{id}")
      * Method({"DELETE"})
      */    
 
@@ -140,6 +143,7 @@ class UserController extends AbstractController
         $response = new Response();
         $response->send();
      }
+
 
     // /**
     //  * @Route("/register/save")
